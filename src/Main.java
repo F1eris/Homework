@@ -42,7 +42,7 @@ public class Main {
         method13();
         System.out.println();
 
-        System.out.println(Arrays.toString(method14(15,99)));
+        System.out.println(Arrays.toString(method14(15, 99)));
     }
 
     public static void printThreeWords() {
@@ -140,39 +140,39 @@ public class Main {
         System.out.println(Arrays.toString(array));
     }
 
-    public static void method11(){
+    public static void method11() {
         int[] array = new int[100];
-        for(int i = 0; i < array.length; i++){
-            array[i] = i+1;
+        for (int i = 0; i < array.length; i++) {
+            array[i] = i + 1;
         }
         System.out.println(Arrays.toString(array));
     }
 
-    public static void method12(){
-        int[] array = {1,5,3,2,11,4,5,2,4,8,9,1};
+    public static void method12() {
+        int[] array = {1, 5, 3, 2, 11, 4, 5, 2, 4, 8, 9, 1};
         System.out.println(Arrays.toString(array));
-        for(int i = 0; i < array.length; i++){
-            if(array[i] < 6) array[i] *= 2;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] < 6) array[i] *= 2;
         }
         System.out.println(Arrays.toString(array));
     }
 
-    public static void method13(){
+    public static void method13() {
         int[][] array = new int[10][10];
-        for(int i = 0; i < array.length; i++){
-            for(int j = 0; j < array[i].length;j++){
-                if(i == j) array[i][j] = 1;
-                if(i + j == array.length-1) array[i][j] = 1;
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array[i].length; j++) {
+                if (i == j) array[i][j] = 1;
+                if (i + j == array.length - 1) array[i][j] = 1;
             }
         }
 
         //Вывод на экран
-        for(int[] innerArr : array){
+        for (int[] innerArr : array) {
             System.out.println(Arrays.toString(innerArr));
         }
     }
 
-    public static int[] method14(int len, int initialValue){
+    public static int[] method14(int len, int initialValue) {
         int[] array = new int[len];
 
         Arrays.fill(array, initialValue);
