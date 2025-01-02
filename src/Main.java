@@ -1,6 +1,10 @@
 import animals.Animal;
 import animals.Cat;
 import animals.Dog;
+import figures.Circle;
+import figures.Figure;
+import figures.Square;
+import figures.Triangle;
 import misc.Bowl;
 
 import java.util.ArrayList;
@@ -49,6 +53,20 @@ public class Main {
             }
         }
 
+        //Задание 2
+        System.out.println();
+        ArrayList<Figure> figures = new ArrayList<>();
+        figures.add(new Circle(10, "Красный", "Зеленый"));
+        figures.add(new Square(7, "Желтый", "Оранжевый"));
+        figures.add(new Triangle(5, 8, 9, "Фиолетовый", "Синий"));
 
+        for (Figure figure : figures) {
+            System.out.println("Фигура: " + figure.getClass().getSimpleName());
+            System.out.println("Периметр: " + figure.calcPerimeter());
+            System.out.println("Площадь: " + figure.calcArea());
+            System.out.println("Цвет фона: " + figure.getFillColor());
+            System.out.println("Цвет границ: " + figure.getBorderColor());
+            System.out.println();
+        }
     }
 }
