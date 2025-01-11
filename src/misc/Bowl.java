@@ -5,11 +5,7 @@ public class Bowl {
     private int foodAmount = 0;
 
     public Bowl(int foodAmount) {
-        if (foodAmount < 0) {
-            System.out.println("Ошибка: в миске не может быть отрицательное значение еды");
-            return;
-        }
-        this.foodAmount = foodAmount;
+        setFoodAmount(foodAmount);
     }
 
     public int getFoodAmount() {
@@ -17,6 +13,10 @@ public class Bowl {
     }
 
     public void setFoodAmount(int foodAmount) {
+        if (foodAmount < 0) {
+            System.out.println("Ошибка: в миске не может быть отрицательное значение еды");
+            return;
+        }
         this.foodAmount = foodAmount;
     }
 

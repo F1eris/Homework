@@ -68,5 +68,6 @@ public class Main {
             System.out.println("Цвет границ: " + figure.getBorderColor());
             System.out.println();
         }
+
     }
 }
