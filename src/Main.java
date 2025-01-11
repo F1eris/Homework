@@ -24,10 +24,11 @@ public class Main {
 
         //Проверка задания 3
         Park park = new Park();
+        park.addAttraction("Американские горки","10:00-16:00", 400);
+        park.addAttraction("Колесо обозрения","10:00-18:00", 300);
+
         for (Park.Attraction attraction : park.getAttractions()) {
             attraction.showInfo();
         }
-
-
     }
 }

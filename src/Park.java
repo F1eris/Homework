@@ -4,10 +4,8 @@ import java.util.ArrayList;
 public class Park {
     private final ArrayList<Park.Attraction> attractions = new ArrayList<>();
 
-    public Park() {
-        attractions.add(new Attraction("Американские горки", "10:00 - 16:00", 400));
-        attractions.add(new Attraction("Колесо обозрения", "10:00 - 18:00", 300));
-
+    public void addAttraction(String description, String workingHours, int cost){
+        attractions.add(new Attraction(description, workingHours, cost));
     }
 
     public ArrayList<Attraction> getAttractions() {
