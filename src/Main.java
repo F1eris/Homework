@@ -65,7 +65,7 @@ public class Main {
 
         if (value <= 0) {
             System.out.println("Красный");
-        } else if (value > 0 && value <= 100) {
+        } else if (value <= 100) {
             System.out.println("Желтый");
         } else {
             System.out.println("Зеленый");
@@ -86,11 +86,7 @@ public class Main {
     public static boolean method5(int num1, int num2) {
         int sum = num1 + num2;
 
-        if (sum >= 10 && sum <= 20) {
-            return true;
-        } else {
-            return false;
-        }
+        return sum >= 10 && sum <= 20;
     }
 
     public static void method6(int num) {
