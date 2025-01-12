@@ -34,7 +34,8 @@ public class Cat extends Animal {
 
         if (bowl.getFoodAmount() >= amount) {
             //кушает
-            bowl.setFoodAmount(bowl.getFoodAmount() - amount);
+//            bowl.setFoodAmount(bowl.getFoodAmount() - amount);
+            bowl.subFoodAmount(amount);
             System.out.printf("%s съел %d еды, в миске осталось %d еды", name, amount, bowl.getFoodAmount());
             full = true;
         } else {
