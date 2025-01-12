@@ -1,10 +1,9 @@
 package figures;
 
-public abstract class Figure implements Perimeter, Area {
+public abstract class Figure implements FiguresLogic {
     //Пусть цвета будут просто стрингом
     protected String fillColor = "Белый";
     protected String borderColor = "Белый";
-
 
     public String getFillColor() {
         return fillColor;

@@ -26,8 +26,8 @@ public class Bowl {
     }
 
     //Убрать еды из миски
-    public void subFoodAmount(int foodAmount){
-        if(this.foodAmount >= foodAmount){
+    public void subFoodAmount(int foodAmount) {
+        if (this.foodAmount >= foodAmount) {
             this.foodAmount -= foodAmount;
         }
     }
