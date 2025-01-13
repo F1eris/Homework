@@ -7,7 +7,7 @@ public class Main {
         Не знаю надо ли это учитывать в методе, если это unchecked.*/
         //Проверка на неверный размер массива
         try {
-            arrayAdder(new String[3][2]);
+            arraySummation(new String[3][2]);
         } catch (MyArraySizeException | MyArrayDataException exc) {
             System.out.println(exc);
         }
@@ -16,7 +16,7 @@ public class Main {
         try {
             String[][] correctArrayWithIncorrectData =
                     {{"1", "2", "3", "4"}, {"5", "6", "7", "8"}, {"9", "LOL", "8", "7"}, {"1", "1", "A", "1"}};
-            arrayAdder(correctArrayWithIncorrectData);
+            arraySummation(correctArrayWithIncorrectData);
         } catch (MyArraySizeException | MyArrayDataException exc) {
             System.out.println(exc);
         }
@@ -25,7 +25,7 @@ public class Main {
         try {
             String[][] correctArray =
                     {{"1", "2", "3", "4"}, {"5", "6", "7", "8"}, {"9", "6", "8", "7"}, {"1", "1", "1", "1"}};
-            System.out.println("Результат вычисления: " + arrayAdder(correctArray));
+            System.out.println("Результат вычисления: " + arraySummation(correctArray));
         } catch (MyArrayDataException | MyArraySizeException exc) {
             System.out.println(exc);
         }
@@ -33,7 +33,7 @@ public class Main {
 
     }
 
-    public static int arrayAdder(String[][] array) throws MyArraySizeException, MyArrayDataException {
+    public static int arraySummation(String[][] array) throws MyArraySizeException, MyArrayDataException {
         //Проверка на размер массива, если длина не 4 - кидает исключение
         if (array.length != 4 || array[0].length != 4) {
             throw new MyArraySizeException(String.format("Размер массива - %dx%d, а должен быть 4x4", array.length, array[0].length));
