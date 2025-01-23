@@ -5,10 +5,19 @@ public class Main {
     public static void main(String[] args) {
         /*Если передать массив [0][1] например, то будет ArrayIndexOutOfBoundsException
         Не знаю надо ли это учитывать в методе, если это unchecked.*/
-        //Проверка на неверный размер массива
+        //Проверка на неверный размер внешнего массива
         try {
             arraySummation(new String[3][2]);
         } catch (MyArraySizeException | MyArrayDataException exc) {
+            System.out.println(exc);
+        }
+
+        //Проверка на неверный размер внутреннего массива
+        try {
+            String[][] incorrectInnerArray =
+                    {{"1", "2", "3", "4"}, {"5", "6", "7", "8"}, {"9", "6", "8", "7", "15", "16"}, {"1", "1", "1", "1"}};
+            arraySummation(incorrectInnerArray);
+        } catch (MyArrayDataException | MyArraySizeException exc) {
             System.out.println(exc);
         }
 
@@ -35,26 +44,31 @@ public class Main {
 
     public static int arraySummation(String[][] array) throws MyArraySizeException, MyArrayDataException {
         //Проверка на размер массива, если длина не 4 - кидает исключение
-        if (array.length != 4 || array[0].length != 4) {
-            throw new MyArraySizeException(String.format("Размер массива - %dx%d, а должен быть 4x4", array.length, array[0].length));
+        if (array.length != 4) {
+            throw new MyArraySizeException(String.format("Длина внешнего массива = %d, а должна быть 4", array.length));
         }
+        for (String[] innerArray : array) {
+            if (innerArray.length != 4) {
+                throw new MyArraySizeException(String.format("Длина внутреннего массива = %d, а должна быть 4", innerArray.length));
+            }
+        }
+
         //логика метода
         //тут хранится адрес текущей ячейки, чтобы можно было вывести его. Не придумал варианта лучше
-        StringBuilder cellAddress = null;
-        try {
-            int sum = 0;
-            cellAddress = new StringBuilder();
-            for (int i = 0; i < array.length; i++) {
-                for (int j = 0; j < array[i].length; j++) {
-                    cellAddress.setLength(0);
-                    cellAddress.append(i).append("x").append(j);
 
+        int sum = 0;
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array[i].length; j++) {
+                try {
                     sum += Integer.parseInt(array[i][j]);
+                } catch (NumberFormatException exc) {
+                    throw new MyArrayDataException(String.format("В ячейке %dx%d находятся неверные данные", i, j));
                 }
+
             }
-            return sum;
-        } catch (NumberFormatException exc) {
-            throw new MyArrayDataException(String.format("В ячейке %s находятся неверные данные", cellAddress));
         }
+        return sum;
+
+
     }
 }
