@@ -29,11 +29,15 @@ public class Main {
         TelephoneDirectory telephoneDirectory = new TelephoneDirectory();
         telephoneDirectory.add("Пупкин", "88888888888");
         telephoneDirectory.add("Иванов", "12345678910");
-        telephoneDirectory.add("Петров", "88888888888");
+        telephoneDirectory.add("Петров", "98765432109");
         telephoneDirectory.add("Пупкин", "00000000000");
+        telephoneDirectory.add("Пупкин", "88888888888");
+
+        System.out.println();
 
         //Поиск телефонов по фамилии пупкин
-        telephoneDirectory.get("пупкин");
+        System.out.println("Номера телефонов по фамилии пупкин:");
+        System.out.println(telephoneDirectory.get("пупкин"));
 
     }
 }

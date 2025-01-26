@@ -1,19 +1,54 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class TelephoneDirectory {
     private final ArrayList<PersonData> dataArrayList = new ArrayList<>();
 
-    public void add(String lastName, String phoneNumber) {
-        dataArrayList.add(new PersonData(lastName, phoneNumber));
+    /**
+     * Добавить строку в справо чник
+     *
+     * @param lastName    фамилия
+     * @param phoneNumber номер телефона
+     * @return true, если успешно добавлен
+     */
+    public boolean add(String lastName, String phoneNumber) {
+        //Если в листе уже существует такой номер
+        if (getAllNumbers().contains(phoneNumber)) {
+            System.out.printf("Номер %s уже содержится в справочнике\n", phoneNumber);
+            return false;
+        }
+
+        return dataArrayList.add(new PersonData(lastName, phoneNumber));
     }
 
-    public void get(String lastName) {
-        System.out.printf("Телефонные номера по фамилии %s:\n", lastName);
+    /**
+     * Получить лист номеров по фамилии
+     *
+     * @param lastName фамилия
+     * @return лист со всеми номерами по переданной фамилии
+     */
+    public List<String> get(String lastName) {
+        List<String> phoneNumbers = new ArrayList<>();
+
         for (PersonData data : dataArrayList) {
             if (data.getLastName().equalsIgnoreCase(lastName)) {
-                System.out.println(data.getPhoneNumber());
+                phoneNumbers.add(data.getPhoneNumber());
             }
         }
+        return phoneNumbers;
+    }
+
+    /**
+     * ВСЕ номера из справочника
+     *
+     * @return лист номеров
+     */
+    public List<String> getAllNumbers() {
+        List<String> allNumbers = new ArrayList<>();
+        for (PersonData data : dataArrayList) {
+            allNumbers.add(data.getPhoneNumber());
+        }
+        return allNumbers;
     }
 
     /**
