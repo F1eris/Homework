@@ -43,7 +43,7 @@ public class TelephoneDirectory {
      *
      * @return лист номеров
      */
-    public List<String> getAllNumbers() {
+    private List<String> getAllNumbers() {
         List<String> allNumbers = new ArrayList<>();
         for (PersonData data : dataArrayList) {
             allNumbers.add(data.getPhoneNumber());
