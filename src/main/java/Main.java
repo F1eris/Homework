@@ -6,8 +6,11 @@ public class Main {
     }
 
     public static BigInteger getFactorial(int f) {
-        if (f <= 1) {
-            return BigInteger.valueOf(1);
+        if(f < 0){
+            throw new IllegalArgumentException("Факториалы отрицательных чисел не определены");
+        }
+        else if(f == 0 || f == 1){
+            return BigInteger.ONE;
         }
         else {
             return BigInteger.valueOf(f).multiply(getFactorial(f - 1));
