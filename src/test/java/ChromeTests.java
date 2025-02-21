@@ -9,16 +9,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Date;
 
 public class ChromeTests {
     WebDriver webDriver;
 
     @BeforeAll
-    static void setupAll(){
+    static void setupAll() {
         WebDriverManager.chromedriver().setup();
     }
 
@@ -27,28 +24,27 @@ public class ChromeTests {
         webDriver = new ChromeDriver();
         webDriver.get("https://www.mts.by/");
         //добавляем куки, чтобы сайт постоянно не запрашивал подтверждение
-        webDriver.manage().addCookie(new Cookie("BITRIX_SM_COOKIES_AGREEMENT","yes", ".www.mts.by","/", null));
+        webDriver.manage().addCookie(new Cookie("BITRIX_SM_COOKIES_AGREEMENT", "yes", ".www.mts.by", "/", null));
         webDriver.navigate().refresh();
     }
 
     @AfterEach
-    void teardown(){
-//        webDriver.quit();
+    void teardown() {
+        webDriver.quit();
     }
 
     @Test
     @DisplayName("1. Проверить название указанного блока")
-    void test1(){
+    void test1() {
         final String expected = "Онлайн пополнение\n" + "без комиссии";
 
-        driverWait("//*[@id=\"pay-section\"]/div/div/div[2]/section/div/h2");
-        WebElement webElement = webDriver.findElement(By.xpath("//*[@id=\"pay-section\"]/div/div/div[2]/section/div/h2"));
+        WebElement webElement = driverWait("//*[@id=\"pay-section\"]/div/div/div[2]/section/div/h2");
         Assertions.assertEquals(expected, webElement.getText(), "Элементы не совпадают!");
     }
 
     @Test
     @DisplayName("2. Проверить наличие логотипов платежных систем")
-    void test2(){
+    void test2() {
         driverWait("//*[@id=\"pay-section\"]/div/div/div[2]/section/div/div[2]");
         final WebElement image1 = webDriver.findElement(By.xpath("//*[@id=\"pay-section\"]/div/div/div[2]/section/div/div[2]/ul/li[1]/img"));
         final WebElement image2 = webDriver.findElement(By.xpath("//*[@id=\"pay-section\"]/div/div/div[2]/section/div/div[2]/ul/li[2]/img"));
@@ -57,39 +53,37 @@ public class ChromeTests {
         final WebElement image5 = webDriver.findElement(By.xpath("//*[@id=\"pay-section\"]/div/div/div[2]/section/div/div[2]/ul/li[5]/img"));
 
         Assertions.assertAll("Проверка изображений",
-                () -> Assertions.assertEquals("Visa",image1.getDomAttribute("alt"),"Изображение \"Visa\" не совпадает"),
-                () -> Assertions.assertEquals("Verified By Visa",image2.getDomAttribute("alt"),"Изображение \"Verified By Visa\" не совпадает"),
-                () -> Assertions.assertEquals("MasterCard",image3.getDomAttribute("alt"),"Изображение \"MasterCard\" не совпадает"),
-                () -> Assertions.assertEquals("MasterCard Secure Code",image4.getDomAttribute("alt"),"Изображение \"MasterCard Secure Code\" не совпадает"),
-                () -> Assertions.assertEquals("Белкарт",image5.getDomAttribute("alt"),"Изображение \"Белкарт\" не совпадает"),
+                () -> Assertions.assertEquals("Visa", image1.getDomAttribute("alt"), "Изображение \"Visa\" не совпадает"),
+                () -> Assertions.assertEquals("Verified By Visa", image2.getDomAttribute("alt"), "Изображение \"Verified By Visa\" не совпадает"),
+                () -> Assertions.assertEquals("MasterCard", image3.getDomAttribute("alt"), "Изображение \"MasterCard\" не совпадает"),
+                () -> Assertions.assertEquals("MasterCard Secure Code", image4.getDomAttribute("alt"), "Изображение \"MasterCard Secure Code\" не совпадает"),
+                () -> Assertions.assertEquals("Белкарт", image5.getDomAttribute("alt"), "Изображение \"Белкарт\" не совпадает"),
 
-                () -> Assertions.assertTrue(image1.isDisplayed(),"Изображение \"Visa\" не отображается"),
-                () -> Assertions.assertTrue(image2.isDisplayed(),"Изображение \"Verified By Visa\" не отображается"),
-                () -> Assertions.assertTrue(image3.isDisplayed(),"Изображение \"MasterCard\" не отображается"),
-                () -> Assertions.assertTrue(image4.isDisplayed(),"Изображение \"MasterCard Secure Code\" не отображается"),
-                () -> Assertions.assertTrue(image5.isDisplayed(),"Изображение \"Белкарт\" не отображается")
+                () -> Assertions.assertTrue(image1.isDisplayed(), "Изображение \"Visa\" не отображается"),
+                () -> Assertions.assertTrue(image2.isDisplayed(), "Изображение \"Verified By Visa\" не отображается"),
+                () -> Assertions.assertTrue(image3.isDisplayed(), "Изображение \"MasterCard\" не отображается"),
+                () -> Assertions.assertTrue(image4.isDisplayed(), "Изображение \"MasterCard Secure Code\" не отображается"),
+                () -> Assertions.assertTrue(image5.isDisplayed(), "Изображение \"Белкарт\" не отображается")
         );
     }
 
     @Test
     @DisplayName("3. Проверить работу ссылки \"Подробнее о сервисе\"")
-    void test3(){
+    void test3() {
         final String expected = "https://www.mts.by/help/poryadok-oplaty-i-bezopasnost-internet-platezhey/";
 
-        driverWait("//*[@id=\"pay-section\"]/div/div/div[2]/section/div/a");
-        WebElement webElement = webDriver.findElement(By.xpath("//*[@id=\"pay-section\"]/div/div/div[2]/section/div/a"));
+        WebElement webElement = driverWait("//*[@id=\"pay-section\"]/div/div/div[2]/section/div/a");
         webElement.click();
         new WebDriverWait(webDriver, Duration.ofSeconds(10)).until(ExpectedConditions.urlContains("/poryadok-oplaty-i-bezopasnost-internet-platezhey"));
-        Assertions.assertEquals(expected,webDriver.getCurrentUrl(), "URL не совпадает с ожидаемым");
+        Assertions.assertEquals(expected, webDriver.getCurrentUrl(), "URL не совпадает с ожидаемым");
     }
 
     @Test
-    @DisplayName("4. Заполнить поля и и проверить работу кнопки...")
-    void test4(){
+    @DisplayName("4. Заполнить поля и проверить работу кнопки...")
+    void test4() {
         final String expected = "Оплата: Услуги связи Номер:375297777777";
 
-        driverWait("//*[@id=\"connection-phone\"]");
-        WebElement webElement = webDriver.findElement(By.xpath("//*[@id=\"connection-phone\"]"));
+        WebElement webElement = driverWait("//*[@id=\"connection-phone\"]");
         webElement.click();
         webElement.sendKeys("297777777");
         webElement = webDriver.findElement(By.xpath("//*[@id=\"connection-sum\"]"));
@@ -105,20 +99,20 @@ public class ChromeTests {
         WebElement iframe = new WebDriverWait(webDriver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//iframe[contains(@class, 'bepaid-iframe')]")));
         webDriver.switchTo().frame(iframe);
-        driverWait("/html/body/app-root/div/div/div/app-payment-container/section/div/div/div[2]");
 
-        webElement = webDriver.findElement(By.xpath("/html/body/app-root/div/div/div/app-payment-container/section/div/div/div[2]"));
+        webElement = driverWait("/html/body/app-root/div/div/div/app-payment-container/section/div/div/div[2]");
         new WebDriverWait(webDriver, Duration.ofSeconds(10)).until(ExpectedConditions.textToBePresentInElement(webElement, expected));
         Assertions.assertEquals(expected, webElement.getText());
     }
 
     /**
      * Метод ожидания загрузки элемента по xPath с таймаутом 10 секунд
+     *
      * @param xPathExpression xPath, по которому идет ожидание загрузки
      * @return загруженный WebElement
      */
-    WebElement driverWait(String xPathExpression){
-        return new WebDriverWait(webDriver,Duration.ofSeconds(10))
+    private WebElement driverWait(String xPathExpression) {
+        return new WebDriverWait(webDriver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath(xPathExpression)));
     }
 }
