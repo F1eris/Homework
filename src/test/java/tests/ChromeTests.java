@@ -1,3 +1,5 @@
+package tests;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
@@ -10,6 +12,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import pageObjects.*;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ChromeTests {
@@ -35,7 +39,7 @@ public class ChromeTests {
 
     @AfterEach
     void teardown() {
-        webDriver.quit();
+//        webDriver.quit();
     }
 
     @Test
@@ -89,6 +93,53 @@ public class ChromeTests {
         Assertions.assertEquals(expected, mtsMainPage.typeAllDataAndSubmit().getPaymentInfoTextElement().getText());
     }
 
+    @Test
+    @DisplayName("5. Проверить надписи в незаполненных полях...")
+    void test5(){
+        List<String> commServicesExpected = new ArrayList<>(Arrays.asList(
+                "Номер телефона",
+                "Сумма",
+                "E-mail для отправки чека"
+        ));
+        List<String> homeInternetExpected = new ArrayList<>(Arrays.asList(
+                "Номер абонента",
+                "Сумма",
+                "E-mail для отправки чека"
+        ));
+        List<String> installmentExpected = new ArrayList<>(Arrays.asList(
+                "Номер счета на 44",
+                "Сумма",
+                "E-mail для отправки чека"
+        ));
+        List<String> debtExpected = new ArrayList<>(Arrays.asList(
+                "Номер счета на 2073",
+                "Сумма",
+                "E-mail для отправки чека"
+        ));
+        List<WebElement> commServicesActual = mtsMainPage.getElementsByPaymentType(MTSMainPage.PaymentType.COMM_SERVICES);
+        List<WebElement> homeInternetActual = mtsMainPage.getElementsByPaymentType(MTSMainPage.PaymentType.HOME_INTERNET);
+        List<WebElement> installmentActual = mtsMainPage.getElementsByPaymentType(MTSMainPage.PaymentType.INSTALLMENT);
+        List<WebElement> debtActual = mtsMainPage.getElementsByPaymentType(MTSMainPage.PaymentType.DEBT);
+        Assertions.assertAll("Проверка плейсхолдеров",
+                ()-> Assertions.assertEquals(commServicesExpected.get(0),commServicesActual.get(0).getDomAttribute("placeholder")),
+                ()-> Assertions.assertEquals(commServicesExpected.get(1),commServicesActual.get(1).getDomAttribute("placeholder")),
+                ()-> Assertions.assertEquals(commServicesExpected.get(2),commServicesActual.get(2).getDomAttribute("placeholder")),
+
+                ()-> Assertions.assertEquals(homeInternetExpected.get(0),homeInternetActual.get(0).getDomAttribute("placeholder")),
+                ()-> Assertions.assertEquals(homeInternetExpected.get(1),homeInternetActual.get(1).getDomAttribute("placeholder")),
+                ()-> Assertions.assertEquals(homeInternetExpected.get(2),homeInternetActual.get(2).getDomAttribute("placeholder")),
+
+                ()-> Assertions.assertEquals(installmentExpected.get(0),installmentActual.get(0).getDomAttribute("placeholder")),
+                ()-> Assertions.assertEquals(installmentExpected.get(1),installmentActual.get(1).getDomAttribute("placeholder")),
+                ()-> Assertions.assertEquals(installmentExpected.get(2),installmentActual.get(2).getDomAttribute("placeholder")),
+
+                ()-> Assertions.assertEquals(debtExpected.get(0),debtActual.get(0).getDomAttribute("placeholder")),
+                ()-> Assertions.assertEquals(debtExpected.get(1),debtActual.get(1).getDomAttribute("placeholder")),
+                ()-> Assertions.assertEquals(debtExpected.get(2),debtActual.get(2).getDomAttribute("placeholder"))
+                );
+        }
+
+
     /**
      * Метод ожидания загрузки элемента по xPath с таймаутом 10 секунд
      *
@@ -101,5 +152,4 @@ public class ChromeTests {
         return new WebDriverWait(webDriver, Duration.ofSeconds(10))
                 .until(ExpectedConditions.presenceOfElementLocated(By.xpath(xPathExpression)));
     }
-
-}
+    }
