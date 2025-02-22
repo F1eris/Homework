@@ -20,7 +20,7 @@ public class ChromeTests {
     }
 
     @BeforeEach
-    void setup() throws ParseException {
+    void setup(){
         webDriver = new ChromeDriver();
         webDriver.get("https://www.mts.by/");
         //добавляем куки, чтобы сайт постоянно не запрашивал подтверждение
