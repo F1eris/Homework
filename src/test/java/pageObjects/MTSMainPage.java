@@ -147,7 +147,7 @@ public class MTSMainPage {
         selectPaymentType(paymentType);
         List<WebElement> webElements = new ArrayList<>();
         for (By locator : list) {
-            webElements.add(wait.until(ExpectedConditions.visibilityOfElementLocated(locator)));
+            webElements.add(wait.until(ExpectedConditions.elementToBeClickable(locator)));
         }
         return webElements;
     }

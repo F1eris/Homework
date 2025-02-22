@@ -26,7 +26,7 @@ public class ChromeTests {
     }
 
     @BeforeEach
-    void setup(){
+    void setup() {
         webDriver = new ChromeDriver();
         webDriver.get("https://www.mts.by/");
         //добавляем куки, чтобы сайт постоянно не запрашивал подтверждение
@@ -39,7 +39,7 @@ public class ChromeTests {
 
     @AfterEach
     void teardown() {
-//        webDriver.quit();
+        webDriver.quit();
     }
 
     @Test
@@ -95,7 +95,7 @@ public class ChromeTests {
 
     @Test
     @DisplayName("5. Проверить надписи в незаполненных полях...")
-    void test5(){
+    void test5() {
         List<String> commServicesExpected = new ArrayList<>(Arrays.asList(
                 "Номер телефона",
                 "Сумма",
@@ -121,35 +121,57 @@ public class ChromeTests {
         List<WebElement> installmentActual = mtsMainPage.getElementsByPaymentType(MTSMainPage.PaymentType.INSTALLMENT);
         List<WebElement> debtActual = mtsMainPage.getElementsByPaymentType(MTSMainPage.PaymentType.DEBT);
         Assertions.assertAll("Проверка плейсхолдеров",
-                ()-> Assertions.assertEquals(commServicesExpected.get(0),commServicesActual.get(0).getDomAttribute("placeholder")),
-                ()-> Assertions.assertEquals(commServicesExpected.get(1),commServicesActual.get(1).getDomAttribute("placeholder")),
-                ()-> Assertions.assertEquals(commServicesExpected.get(2),commServicesActual.get(2).getDomAttribute("placeholder")),
+                () -> Assertions.assertEquals(commServicesExpected.get(0), commServicesActual.get(0).getDomAttribute("placeholder")),
+                () -> Assertions.assertEquals(commServicesExpected.get(1), commServicesActual.get(1).getDomAttribute("placeholder")),
+                () -> Assertions.assertEquals(commServicesExpected.get(2), commServicesActual.get(2).getDomAttribute("placeholder")),
 
-                ()-> Assertions.assertEquals(homeInternetExpected.get(0),homeInternetActual.get(0).getDomAttribute("placeholder")),
-                ()-> Assertions.assertEquals(homeInternetExpected.get(1),homeInternetActual.get(1).getDomAttribute("placeholder")),
-                ()-> Assertions.assertEquals(homeInternetExpected.get(2),homeInternetActual.get(2).getDomAttribute("placeholder")),
+                () -> Assertions.assertEquals(homeInternetExpected.get(0), homeInternetActual.get(0).getDomAttribute("placeholder")),
+                () -> Assertions.assertEquals(homeInternetExpected.get(1), homeInternetActual.get(1).getDomAttribute("placeholder")),
+                () -> Assertions.assertEquals(homeInternetExpected.get(2), homeInternetActual.get(2).getDomAttribute("placeholder")),
 
-                ()-> Assertions.assertEquals(installmentExpected.get(0),installmentActual.get(0).getDomAttribute("placeholder")),
-                ()-> Assertions.assertEquals(installmentExpected.get(1),installmentActual.get(1).getDomAttribute("placeholder")),
-                ()-> Assertions.assertEquals(installmentExpected.get(2),installmentActual.get(2).getDomAttribute("placeholder")),
+                () -> Assertions.assertEquals(installmentExpected.get(0), installmentActual.get(0).getDomAttribute("placeholder")),
+                () -> Assertions.assertEquals(installmentExpected.get(1), installmentActual.get(1).getDomAttribute("placeholder")),
+                () -> Assertions.assertEquals(installmentExpected.get(2), installmentActual.get(2).getDomAttribute("placeholder")),
 
-                ()-> Assertions.assertEquals(debtExpected.get(0),debtActual.get(0).getDomAttribute("placeholder")),
-                ()-> Assertions.assertEquals(debtExpected.get(1),debtActual.get(1).getDomAttribute("placeholder")),
-                ()-> Assertions.assertEquals(debtExpected.get(2),debtActual.get(2).getDomAttribute("placeholder"))
-                );
-        }
-
-
-    /**
-     * Метод ожидания загрузки элемента по xPath с таймаутом 10 секунд
-     *
-     * @param xPathExpression xPath, по которому идет ожидание загрузки
-     * @return загруженный WebElement
-     * @deprecated - ожидание загрузки элементов не должно находится в тестовом классе
-     */
-    @Deprecated
-    private WebElement oldDriverWait(String xPathExpression) {
-        return new WebDriverWait(webDriver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath(xPathExpression)));
+                () -> Assertions.assertEquals(debtExpected.get(0), debtActual.get(0).getDomAttribute("placeholder")),
+                () -> Assertions.assertEquals(debtExpected.get(1), debtActual.get(1).getDomAttribute("placeholder")),
+                () -> Assertions.assertEquals(debtExpected.get(2), debtActual.get(2).getDomAttribute("placeholder"))
+        );
     }
+
+    @Test
+    @DisplayName("6. Для варианта \"Услуги связи\" заполнить поля...")
+    void test6() {
+        MTSPaymentPage mtsPaymentPage = mtsMainPage.typeAllDataAndSubmit();
+
+        Assertions.assertAll("Проверка корректности суммы",
+                () -> Assertions.assertEquals("100.00 BYN", mtsPaymentPage.getSumTextElement().getText()),
+                () -> Assertions.assertEquals("Оплатить 100.00 BYN", mtsPaymentPage.getSumButtonElement().getText())
+        );
+        //Проверка номера
+        Assertions.assertEquals("375297777777", mtsPaymentPage.getPaymentInfoTextElement().getText().replaceAll("\\D", ""));
+
+        List<WebElement> webElements = mtsPaymentPage.getFieldWebElements();
+        Assertions.assertAll("Проверка надписей на полях реквизитов карты",
+                () -> Assertions.assertEquals("Номер карты", webElements.get(0).getText()),
+                () -> Assertions.assertEquals("Срок действия", webElements.get(1).getText()),
+                () -> Assertions.assertEquals("CVC", webElements.get(2).getText()),
+                () -> Assertions.assertEquals("Имя держателя (как на карте)", webElements.get(3).getText())
+        );
+        List<WebElement> iconWebElements = mtsPaymentPage.getIconWebElements();
+        Assertions.assertAll("Проверка иконок платежных систем по src",
+                () -> Assertions.assertEquals("assets/images/payment-icons/card-types/visa-system.svg", iconWebElements.get(0).getDomAttribute("src")),
+                () -> Assertions.assertEquals("assets/images/payment-icons/card-types/mastercard-system.svg", iconWebElements.get(1).getDomAttribute("src")),
+                () -> Assertions.assertEquals("assets/images/payment-icons/card-types/belkart-system.svg", iconWebElements.get(2).getDomAttribute("src")),
+                () -> Assertions.assertEquals("assets/images/payment-icons/card-types/maestro-system.svg", iconWebElements.get(3).getDomAttribute("src")),
+                () -> Assertions.assertEquals("assets/images/payment-icons/card-types/mir-system-ru.svg", iconWebElements.get(4).getDomAttribute("src"))
+        );
+        Assertions.assertAll("Проверка иконок по isDisplayed",
+                () -> Assertions.assertTrue(iconWebElements.get(0).isDisplayed()),
+                () -> Assertions.assertTrue(iconWebElements.get(1).isDisplayed()),
+                () -> Assertions.assertTrue(iconWebElements.get(2).isDisplayed()),
+                () -> Assertions.assertTrue(iconWebElements.get(3).isDisplayed()),
+                () -> Assertions.assertTrue(iconWebElements.get(4).isDisplayed())
+        );
     }
+}
