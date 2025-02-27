@@ -1,5 +1,7 @@
 package pageObjects;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -72,13 +74,15 @@ public class MTSMainPage {
 
     public MTSMainPage(WebDriver webDriver) {
         this.webDriver = webDriver;
-        this.wait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(webDriver, Duration.ofSeconds(30));
     }
 
+    @Step("Получить элемент \"Онлайн пополнение\"")
     public WebElement getOnlineReplenishmentElement() {
         return wait.until(ExpectedConditions.presenceOfElementLocated(onlineReplenishmentLocator));
     }
 
+    @Step("Получить элементы изображений")
     public List<WebElement> getImageElements() {
         return new ArrayList<>(Arrays.asList(
                 wait.until(ExpectedConditions.presenceOfElementLocated(partnersImageLocator.get(0))),
@@ -89,19 +93,20 @@ public class MTSMainPage {
         ));
     }
 
+    @Step("Нажать ссылку \"Подробнее о сервисе\"")
     public void clickMoreAboutServiceLink() {
         wait.until(ExpectedConditions.elementToBeClickable(moreAboutServiceLinkLocator)).click();
         wait.until(ExpectedConditions.urlContains("/poryadok-oplaty-i-bezopasnost-internet-platezhey"));
     }
 
     public MTSMainPage typeAllData() {
-        WebElement webElement = wait.until(ExpectedConditions.presenceOfElementLocated(commServiceFieldLocators.get(0)));
+        WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(commServiceFieldLocators.get(0)));
         webElement.click();
         webElement.sendKeys("297777777");
-        webElement = wait.until(ExpectedConditions.presenceOfElementLocated(commServiceFieldLocators.get(1)));
+        webElement = wait.until(ExpectedConditions.elementToBeClickable(commServiceFieldLocators.get(1)));
         webElement.click();
         webElement.sendKeys("100");
-        webElement = wait.until(ExpectedConditions.presenceOfElementLocated(commServiceFieldLocators.get(2)));
+        webElement = wait.until(ExpectedConditions.elementToBeClickable(commServiceFieldLocators.get(2)));
         webElement.click();
         webElement.sendKeys("test@gmail.com");
         return this;
