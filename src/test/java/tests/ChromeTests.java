@@ -4,7 +4,9 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Description;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Step;
+import io.qameta.allure.junit5.AllureJunit5;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@ExtendWith(AllureJunit5.class)
 public class ChromeTests {
     private WebDriver webDriver;
     private MTSMainPage mtsMainPage;
@@ -47,7 +50,7 @@ public class ChromeTests {
 
     @Test
     @DisplayName("1. Проверить название указанного блока")
-    @Description("Тест 1 - описание теста")
+    @Description("Открывет блок \"Онлайн пополнение без комиссии\" и сравнивает название с ожидаемым")
     void test1() {
         final String expected = "Онлайн пополнение\n" + "без комиссии";
         Assertions.assertEquals(expected, mtsMainPage.getOnlineReplenishmentElement().getText(), "Элементы не совпадают!");
@@ -55,6 +58,7 @@ public class ChromeTests {
 
     @Test
     @DisplayName("2. Проверить наличие логотипов платежных систем")
+    @Description("Открывает блок с изображениями партнеров и сравнивает их с ожидаемыми")
     void test2() {
         List<WebElement> imageElements = mtsMainPage.getImageElements();
         final WebElement image1 = imageElements.get(0);
@@ -81,6 +85,7 @@ public class ChromeTests {
 
     @Test
     @DisplayName("3. Проверить работу ссылки \"Подробнее о сервисе\"")
+    @Description("Переходит по ссылке \"Подробнее о сервисе\" и проверяет url с ожидаемым")
     void test3() {
         final String expected = "https://www.mts.by/help/poryadok-oplaty-i-bezopasnost-internet-platezhey/";
 
@@ -90,6 +95,7 @@ public class ChromeTests {
 
     @Test
     @DisplayName("4. Заполнить поля и проверить работу кнопки...")
+    @Description("Заполняет поля подготовленными данными и проверяет работоспособность кнопки \"Продолжить\"")
     void test4() {
         final String expected = "Оплата: Услуги связи Номер:375297777777";
 
@@ -98,6 +104,7 @@ public class ChromeTests {
 
     @Test
     @DisplayName("5. Проверить надписи в незаполненных полях...")
+    @Description("Проверяет все поля во всех вариантах оплаты услуг")
     void test5() {
         List<String> commServicesExpected = new ArrayList<>(Arrays.asList(
                 "Номер телефона",
@@ -144,6 +151,8 @@ public class ChromeTests {
 
     @Test
     @DisplayName("6. Для варианта \"Услуги связи\" заполнить поля...")
+    @Description("Заполняет все поля подготовленными данными, нажимает кнопку продолжить и проверяет корректность" +
+            "отображения суммы и другие поля")
     void test6() {
         MTSPaymentPage mtsPaymentPage = mtsMainPage.typeAllDataAndSubmit();
 
