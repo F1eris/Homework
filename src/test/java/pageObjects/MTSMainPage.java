@@ -1,5 +1,6 @@
 package pageObjects;
 
+import io.qameta.allure.Attachment;
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -99,6 +100,7 @@ public class MTSMainPage {
         wait.until(ExpectedConditions.urlContains("/poryadok-oplaty-i-bezopasnost-internet-platezhey"));
     }
 
+    @Step("Заполнить все поля")
     public MTSMainPage typeAllData() {
         WebElement webElement = wait.until(ExpectedConditions.elementToBeClickable(commServiceFieldLocators.get(0)));
         webElement.click();
@@ -112,6 +114,7 @@ public class MTSMainPage {
         return this;
     }
 
+    @Step("Заполнить все поля и нажать \"Продолжить\"")
     public MTSPaymentPage typeAllDataAndSubmit() {
         typeAllData();
         wait.until(ExpectedConditions.elementToBeClickable(commServiceFieldLocators.get(3))).submit();

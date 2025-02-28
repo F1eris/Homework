@@ -1,6 +1,9 @@
 package tests;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.qameta.allure.Description;
+import io.qameta.allure.Owner;
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
@@ -44,9 +47,9 @@ public class ChromeTests {
 
     @Test
     @DisplayName("1. Проверить название указанного блока")
+    @Description("Тест 1 - описание теста")
     void test1() {
         final String expected = "Онлайн пополнение\n" + "без комиссии";
-
         Assertions.assertEquals(expected, mtsMainPage.getOnlineReplenishmentElement().getText(), "Элементы не совпадают!");
     }
 
